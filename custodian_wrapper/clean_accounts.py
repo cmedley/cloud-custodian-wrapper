@@ -27,8 +27,10 @@ def get_argv_custodian_run_cmd(sts_role, region, policy, account_name, s3_loggin
     if custodian_live_fire and reports_only_mode:
         sys.exit('You can not run in live fire mode and reports mode at the same time.')
 
+    account_id = sts_role.split(':')[4]
+
     if custodian_live_fire:
-        custodian_output = s3_logging_bucket
+        custodian_output = '%s/%s' % (s3_logging_bucket, account_id)
     else:
         custodian_output = 'dry_run/%s/%s' % (account_name, region)
 
